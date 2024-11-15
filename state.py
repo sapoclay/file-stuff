@@ -4,7 +4,10 @@ from deletes import delete_all_duplicates
  # Variables de estado
 state = {
         "current_duplicates": [],
-        "current_view": "duplicates"
+        "current_view": "duplicates",
+        "resize_input_folder": "",
+        "resize_output_folder": "",
+        "selecting_resize_output": False,
     }
     
 selected_dir_text = ft.Text(
@@ -12,6 +15,13 @@ selected_dir_text = ft.Text(
         size=14,
         color=ft.colors.BLUE_200
     )
+
+selected_bulk_text = ft.Text(
+    value="No se ha seleccionado ninguna carpeta",
+    size = 14,
+    color=ft.colors.BLUE_200
+ 
+)
     
 result_text = ft.Text(size=14, weight=ft.FontWeight.BOLD)
     
@@ -39,3 +49,20 @@ organize_dir_text = ft.Text(
 
 
 organize_result_text = ft.Text(size=14, weight=ft.FontWeight.BOLD)
+
+# Controles para la vista de redimensionar imágenes
+resize_input_text = ft.Text(
+    "Carpeta de entrada: No seleccionada",
+    size=14,
+    color=ft.colors.BLUE_200,
+)
+
+resize_output_text = ft.Text(
+    "Carpeta de salida: No seleccionada",
+    size=14,
+    color=ft.colors.BLUE_200,
+)
+
+resize_result_text = ft.Text(size=14, weight=ft.FontWeight.BOLD)
+
+
