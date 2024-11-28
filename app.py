@@ -1,8 +1,11 @@
 import flet as ft
+from states import state, selected_dir_text, result_text, delete_all_button, duplicates_list, resize_input_text, resize_output_text, resize_result_text, width_field, height_field, convert_input_text, convert_result_text, format_dropdown 
 from functionalities.delete_duplicates import find_duplicates, delete_file
 from functionalities.organize_files import organize_folder
 from functionalities.resize_files import batch_resize
 from functionalities.converter_images import convert_img
+
+from views.about_view import view_about
 
 def main(page: ft.Page):
     
@@ -139,7 +142,7 @@ def main(page: ft.Page):
             content_area.content = convert_images_view
         elif selected == 4:
             state["current_view"] = "about"
-            content_area.content = about_view
+            content_area.content = view_about(page)
         content_area.update()
         
     def handle_file_picker(e: ft.FilePickerResultEvent):
@@ -318,11 +321,6 @@ def main(page: ft.Page):
         duplicates_list.update()
         result_text.update()
         delete_all_button.update()
-        
-    def abrir_repositorio(_):
-        # Solo abrimos la URL sin parámetros adicionales
-        page.launch_url("https://github.com/sapoclay/file-stuff")
-
     
     # Configurar los selectores de ARCHIVOS para el convertor
     file_picker = ft.FilePicker(
@@ -563,46 +561,6 @@ def main(page: ft.Page):
         ]),
         padding = 30,
         expand = True
-    )
-    
-   # Vista de información
-    about_view = ft.Container(
-        content=ft.Column([
-            ft.Container(
-                content=ft.Text(
-                    "Acerca de File Stuff",
-                    size=28,
-                    weight=ft.FontWeight.BOLD,
-                    color=ft.Colors.BLUE_200  
-                ),
-                margin=ft.margin.only(bottom=20)
-            ),
-            ft.Image(
-                src="./assets/logo.png",
-                width=200,
-                height=200,
-                fit=ft.ImageFit.CONTAIN,  
-            ),
-            ft.Text(
-                "File Stuff es una aplicación básica para gestionar archivos.",
-                size=16,
-                color=ft.Colors.BLUE_500,  
-            ),
-            ft.ElevatedButton(
-                "Visitar repositorio",
-                icon=ft.Icons.LINK,  
-                color=ft.Colors.WHITE,  
-                bgcolor=ft.Colors.BLUE_900,
-                on_click=abrir_repositorio,  
-            ),
-            ft.Text(
-                "entreunosyceros.net",
-                size=14,
-                color=ft.Colors.GREY_600,  
-            ),
-        ]),
-        padding=30,
-        expand=True
     )
     
     # Vista por defecto de la aplicación ... la 0.
