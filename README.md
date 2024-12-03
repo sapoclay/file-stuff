@@ -1,6 +1,8 @@
 ## FILES STUFF
 
-Versión 0.005
+![about-file-stuff](https://github.com/user-attachments/assets/53c638f1-5d0e-4699-8c4f-da9c62c12a5e)
+
+Versión 0.05
 
 Este proyecto es una aplicación de escritorio que permite gestionar archivos de manera eficiente, enfocándose en la eliminación de archivos duplicados, la organización de archivos en carpetas, convertir imágenes de un formato a otro y el redimensionamiento de imágenes. La aplicación está construida utilizando el framework Flet para la interfaz gráfica y poco a poco voy a ir añadiéndole más cosas que me pueda ir haciendo falta.
 
