@@ -1,6 +1,19 @@
 import os
 import hashlib
 
+"""
+Este módulo proporciona funcionalidades para identificar y gestionar archivos duplicados en un directorio.
+
+Funciones:
+- hash_file(filename): Calcula y devuelve el hash MD5 de un archivo.
+- find_duplicates(folder): Busca archivos duplicados en un directorio especificado y devuelve una lista con sus rutas.
+- delete_file(filepath): Elimina un archivo dado y devuelve True si tiene éxito, o False en caso de error.
+
+Dependencias:
+- os: Para navegar por los directorios y gestionar archivos.
+- hashlib: Para calcular el hash MD5 de los archivos.
+"""
+
 def hash_file(filename):
     h = hashlib.md5()
     with open(filename, 'rb') as file:

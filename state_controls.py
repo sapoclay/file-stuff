@@ -1,4 +1,5 @@
 import flet as ft
+from functions.functions_duplicate_files import delete_all_duplicates
 
 # Variables de estado
 state = {
@@ -10,7 +11,7 @@ state = {
     "convert_input_file": "",
 }
 
-# Controles de la interfaz
+# Controles compartidos entre las vistas
 selected_dir_text = ft.Text(
     "No se ha seleccionado ninguna carpeta",
     size=14,
@@ -25,14 +26,13 @@ duplicates_list = ft.ListView(
     height=200,
 )
 
-# Botón para eliminar todos los archivos duplicados
 delete_all_button = ft.ElevatedButton(
     "Eliminar Todos los Archivos Duplicados",
     color=ft.Colors.WHITE,
     bgcolor=ft.Colors.RED_900,
     icon=ft.Icons.DELETE_SWEEP,
     visible=False,
-    on_click=lambda e: delete_all_duplicates()  # Define esta función más adelante
+    on_click=lambda e: delete_all_duplicates(state, result_text, duplicates_list, delete_all_button),
 )
 
 # Controles para la vista de organizar archivos
@@ -94,5 +94,5 @@ format_dropdown = ft.Dropdown(
         ft.dropdown.Option("BMP"),
         ft.dropdown.Option("GIF"),
     ],
-    value="PNG"
+    value="PNG",
 )

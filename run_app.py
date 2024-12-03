@@ -2,6 +2,56 @@ import os
 import subprocess
 import sys
 
+"""
+Este módulo proporciona un flujo automatizado para gestionar el entorno virtual de Python y ejecutar un script principal.
+
+Funciones principales:
+- Crear, configurar y verificar un entorno virtual.
+- Instalar dependencias desde un archivo requirements.txt.
+- Ejecutar un script principal dentro del entorno virtual.
+
+Dependencias:
+- os: Para operaciones relacionadas con el sistema de archivos y rutas.
+- subprocess: Para ejecutar comandos de sistema.
+- sys: Para verificar la versión de Python y gestionar el proceso del script.
+
+Variables globales:
+- DIRECTORIO_SCRIPT (str): Directorio donde se encuentra el archivo `run_app.py`.
+- VENV_DIR (str): Ruta al entorno virtual (venv).
+
+Funciones:
+1. **obtener_python_ejecutable() -> str**
+   - Determina la ruta del ejecutable de Python dentro del entorno virtual, dependiendo del sistema operativo.
+
+2. **entorno_virtual_existe() -> bool**
+   - Comprueba si el entorno virtual ya está creado.
+
+3. **crear_entorno_virtual()**
+   - Crea un entorno virtual utilizando `virtualenv`.
+
+4. **asegurar_pip(python_executable: str)**
+   - Verifica que `pip` esté disponible en el entorno virtual, e intenta instalarlo si no lo está.
+
+5. **instalar_dependencias(python_executable: str)**
+   - Instala las dependencias enumeradas en el archivo `requirements.txt`.
+
+6. **ejecutar_app()**
+   - Ejecuta el archivo `app.py` utilizando el Python del entorno virtual.
+
+7. **main()**
+   - Controla la lógica principal:
+     - Verifica si el entorno virtual existe.
+     - Si no existe, lo crea e instala las dependencias.
+     - Asegura que las dependencias estén actualizadas.
+     - Ejecuta el script principal.
+
+"""
+
+# Verificar que la versión de Python es compatible
+if sys.version_info.major < 3:
+    print("Se requiere Python 3 para ejecutar este script.")
+    sys.exit(1)
+
 # Obtener el directorio donde se encuentra el archivo run_app.py
 DIRECTORIO_SCRIPT = os.path.dirname(os.path.abspath(__file__))
 
@@ -19,7 +69,7 @@ def obtener_python_ejecutable():
 def entorno_virtual_existe():
     return os.path.isdir(VENV_DIR)
 
-# Crear el entorno virtual
+# Crear el entorno virtual para ejecutar directamente el programa ahí
 def crear_entorno_virtual():
     print("Creando el entorno virtual...")
     subprocess.run([sys.executable, "-m", "virtualenv", VENV_DIR], check=True)
