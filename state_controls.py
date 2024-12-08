@@ -9,6 +9,7 @@ state = {
     "resize_output_folder": "",
     "selecting_resize_output": False,
     "convert_input_file": "",
+    "rename_folder": None,
 }
 
 # Controles compartidos entre las vistas
@@ -95,4 +96,27 @@ format_dropdown = ft.Dropdown(
         ft.dropdown.Option("GIF"),
     ],
     value="PNG",
+)
+
+# Controles para la vista eliminar fondo
+
+carpeta_origen_text = ft.Text(
+    "Carpeta de origen: No seleccionada",
+    size=14,
+    color=ft.Colors.BLUE_200,
+)
+
+carpeta_destino_text = ft.Text(
+    "Carpeta de destino: No seleccionada",
+    size=14,
+    color=ft.Colors.BLUE_200,
+)
+
+# Controles para la vista rename_all_Files
+
+# Definición de carpeta_text
+carpeta_text = ft.Text(
+    "Carpeta seleccionada: No seleccionada",
+    size=14,
+    color=ft.Colors.BLUE_200,
 )

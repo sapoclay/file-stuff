@@ -12,6 +12,9 @@ from views.duplicate_files_view import duplicate_files_view
 from views.organize_files_view import organize_files_view  
 from views.resize_files_view import resize_files_view  
 from views.convert_files_view import convert_images_view
+from views.delete_background_view import delete_background_view
+from views.rename_files_view import rename_files_view
+
 
 # Importar variables de estado y controles
 from state_controls import (
@@ -25,6 +28,9 @@ from state_controls import (
     resize_input_text,
     resize_output_text,
     resize_result_text,
+    carpeta_origen_text,  
+    carpeta_destino_text,  
+    carpeta_text,
     width_field,
     height_field,
     convert_input_text,
@@ -38,6 +44,13 @@ def main(page: ft.Page):
     
     # Aplicar el tema personalizado
     page.theme = configurar_tema()
+    
+    # Definir snack_bar
+    snack_bar = ft.SnackBar(
+        content=ft.Text(""),
+        duration=2000,  # Duración del mensaje en milisegundos
+    )
+    page.overlay.append(snack_bar)
         
     # MENÚ LATERAL CAMBIO VISTAS
     def change_view(e):
@@ -75,7 +88,17 @@ def main(page: ft.Page):
             convert_result_text,
             convert_image_function,
         )
-        elif selected == 4:
+        elif selected == 4:  # Índice para la nueva vista
+            state["current_view"] = "delete_background"
+            content_area.content = delete_background_view(
+                page, state, folder_picker, snack_bar, carpeta_origen_text, carpeta_destino_text
+            )
+        elif selected == 5:  # Índice para la nueva vista
+            state["current_view"] = "rename"
+            content_area.content = rename_files_view(
+                page, state, folder_picker, snack_bar, carpeta_text
+            )
+        elif selected == 6:
             state["current_view"] = "about"
             content_area.content = view_about(page)
         content_area.update()
@@ -96,21 +119,27 @@ def main(page: ft.Page):
     file_picker.allowed_extensions = ["png", "jpg", "jpeg", "gif", "bmp", "webp"] # extensiones permitidas
     
     # Configurar el selector de CARPETAS
-    folder_picker = ft.FilePicker(on_result=lambda e: handle_folder_picker(
-    e,
-    state,
-    page,
-    selected_dir_text,
-    scan_directory,
-    organize_directory,
-    resize_input_text,
-    resize_output_text,
-    folder_picker,
-    result_text,
-    delete_all_button,
-    duplicates_list,
-    organize_result_text
-    ))
+    folder_picker = ft.FilePicker(
+        on_result=lambda e: handle_folder_picker(
+            e,  # Este es el evento, ya está siendo pasado automáticamente
+            state,
+            page,
+            selected_dir_text,
+            scan_directory,
+            organize_directory,
+            resize_input_text,
+            resize_output_text,
+            folder_picker,
+            result_text,
+            delete_all_button,
+            duplicates_list,
+            organize_result_text,
+            carpeta_origen_text,  # Estas son las variables que ya tienes definidas en state_controls
+            carpeta_destino_text,
+            organize_dir_text,
+            carpeta_text
+        )
+    )
     page.overlay.extend([folder_picker, file_picker])
         
     # Vista por defecto de la aplicación ... la 0.
@@ -146,6 +175,16 @@ def main(page: ft.Page):
                 icon = ft.Icons.TRANSFORM,
                 selected_icon = ft.Icons.TRANSFORM,
                 label = "Convertir",    
+            ),
+            ft.NavigationRailDestination(
+                icon=ft.Icons.REMOVE_CIRCLE_OUTLINE,
+                selected_icon=ft.Icons.REMOVE_CIRCLE_OUTLINE,
+                label="Eliminar Fondo",
+            ),
+            ft.NavigationRailDestination(
+                icon=ft.Icons.DRIVE_FILE_RENAME_OUTLINE,
+                selected_icon=ft.Icons.DRIVE_FILE_RENAME_OUTLINE,
+                label="Renombrar",
             ),
             ft.NavigationRailDestination(
                 icon = ft.Icons.INFO,

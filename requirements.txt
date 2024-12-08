@@ -1,2 +1,4 @@
 flet
 Pillow
+rembg
+onnxruntime

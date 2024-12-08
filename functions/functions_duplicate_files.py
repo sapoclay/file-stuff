@@ -35,13 +35,29 @@ def scan_directory(directory, state, result_text, delete_all_button, duplicates_
                     ),
                 ])
                 duplicates_list.controls.append(dup_row)
+
+        # Validar y actualizar los controles
+        if duplicates_list.page:  # Verificar que duplicates_list está asociado a la página
+            duplicates_list.update()
+        else:
+            print("Error: duplicates_list no está asociado a la página.")
+
+        if result_text.page:  # Verificar que result_text está asociado a la página
+            result_text.update()
+        else:
+            print("Error: result_text no está asociado a la página.")
+
+        if delete_all_button.page:  # Verificar que delete_all_button está asociado a la página
+            delete_all_button.update()
+        else:
+            print("Error: delete_all_button no está asociado a la página.")
+
     except Exception as e:
+        # Manejar errores al escanear el directorio
         result_text.value = f"Error al escanear el directorio: {str(e)}"
         result_text.color = ft.Colors.RED_500
-
-    duplicates_list.update()
-    result_text.update()
-    delete_all_button.update()
+        if result_text.page:  # Actualizar solo si está asociado
+            result_text.update()
 
 
 def delete_duplicate(filepath, state, result_text, duplicates_list, delete_all_button):

@@ -27,10 +27,12 @@ Archivo ejemplo.docx movido a Documentos
 
 
 def organize_folder(folder):
+    # Tipos de archivos que se van a organizar
     file_types = {
-        'Imagenes': ['.jpeg', '.jpg', '.png', '.gif', '.webp'],
+        'Imagenes': ['.jpeg', '.jpg', '.png', '.gif', '.webp', '.xcf', '.tiff', '.ico'],
         'Vídeos': ['.mp4', '.mkv', '.avi', '.mov'],
-        'Documentos': ['.pdf', '.docx', '.txt', '.m3u8', '.m3u'],
+        'Audio': ['.mp3', '.wav', '.wma', '.ogg'],
+        'Documentos': ['.pdf', '.docx', '.odt', '.txt', '.m3u8', '.m3u', '.json', '.log'],
         'Datasets': ['.xlsx', '.csv'],
         'Comprimidos': ['.zip', '.rar', '.gz'],
         'Programas': ['.deb', '.appImage', '.exe', '.msi', '.snap', '.flatpak'],

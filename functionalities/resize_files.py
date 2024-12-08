@@ -22,10 +22,7 @@ Parámetros:
 - width (int): Nuevo ancho de las imágenes redimensionadas, en píxeles.
 - height (int): Nueva altura de las imágenes redimensionadas, en píxeles.
 
-Ejemplo:
->>> batch_resize('/ruta/a/entrada', '/ruta/a/salida', 800, 600)
-imagen1.jpeg Redimensionado
-imagen2.png Redimensionado
+
 """
 
 
