@@ -4,7 +4,7 @@
 
 - Versión 0.005
 
-Este proyecto es una aplicación de escritorio que permite gestionar archivos de manera eficiente, enfocándose en la eliminación de archivos duplicados, la organización de archivos en carpetas, convertir imágenes de un formato a otro y el redimensionamiento de imágenes. La aplicación está construida utilizando el framework Flet para la interfaz gráfica y poco a poco voy a ir añadiéndole más cosas que me pueda ir haciendo falta.
+Este proyecto es una aplicación de escritorio que permite gestionar archivos de manera eficiente, enfocándose en la eliminación de archivos duplicados y la organización de archivos en carpetas. La aplicación está construida utilizando el framework Flet para la interfaz gráfica y poco a poco voy a ir añadiéndole más cosas que me pueda ir haciendo falta.
 
 - Versión 0.5
 
