@@ -1,16 +1,16 @@
 ## FILES STUFF
 
-![about-file-stuff](https://github.com/user-attachments/assets/53c638f1-5d0e-4699-8c4f-da9c62c12a5e)
+![file-stuff](https://github.com/user-attachments/assets/91bc7b6a-9263-4584-b142-4ead1a5e1e0b)
 
-Versión 0.005
+- Versión 0.005
 
 Este proyecto es una aplicación de escritorio que permite gestionar archivos de manera eficiente, enfocándose en la eliminación de archivos duplicados, la organización de archivos en carpetas, convertir imágenes de un formato a otro y el redimensionamiento de imágenes. La aplicación está construida utilizando el framework Flet para la interfaz gráfica y poco a poco voy a ir añadiéndole más cosas que me pueda ir haciendo falta.
 
-Versión 0.5
+- Versión 0.5
 
 Se ha realizado la una modularización del programa. Las funcionalidades se han puesto en la carpeta functionalities, las funciones relacionadas con cada funcionalidad se han colocado en la carpeta functions, y las vistas de cada una de las funcionalidades se han colocado en la carpeta views.
 
-Versión 0.4
+- Versión 0.4
 
 Añadidas nuevas funcionalidades para convertir una imagen a diferentes formatos (png,jpeg,gif,bmp y webp), para eliminar el fondo de las imágenes contenidas dentro de una carpeta utilizando rembg y onnxruntime, y también se ha añadido la posibilidad de renombrar TODOS los archivos que estén incluidos dentro de una carpeta (permite utilizar el comodín ### para poder renombrar archivos hasta el 999)
 
