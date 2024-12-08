@@ -134,7 +134,7 @@ def main(page: ft.Page):
             delete_all_button,
             duplicates_list,
             organize_result_text,
-            carpeta_origen_text,  # Estas son las variables que ya tienes definidas en state_controls
+            carpeta_origen_text, 
             carpeta_destino_text,
             organize_dir_text,
             carpeta_text
