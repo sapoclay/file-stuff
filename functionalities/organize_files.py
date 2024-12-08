@@ -19,10 +19,6 @@ Dependencias:
 Parámetros:
 - folder (str): Ruta al directorio que contiene los archivos a organizar.
 
-Ejemplo:
->>> organize_folder('/ruta/a/mi/carpeta')
-Archivo ejemplo.png movido a Imagenes
-Archivo ejemplo.docx movido a Documentos
 """
 
 
