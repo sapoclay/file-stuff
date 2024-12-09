@@ -1,42 +1,9 @@
 import flet as ft
-from functionalities.rename_all_files import bulk_rename_files
+from functions.functions_rename_files import seleccionar_carpeta, renombrar_archivos
 
 def rename_files_view(page, state, folder_picker, snack_bar, carpeta_text):
+    # Campo de entrada para la plantilla de nombres
     name_template_field = ft.TextField(label="Plantilla de nombre (usa ### para el contador)")
-
-    # Función para seleccionar la carpeta de origen
-    def seleccionar_carpeta(e):
-        folder_picker.get_directory_path()
-
-    # Función para renombrar los archivos
-    def renombrar_archivos(e):
-        if not state.get("rename_folder"):
-            snack_bar.content.value = "Selecciona una carpeta primero."
-            snack_bar.open = True
-            page.update()
-            return
-
-        if not name_template_field.value:
-            snack_bar.content.value = "Especifica una plantilla de nombre."
-            snack_bar.open = True
-            page.update()
-            return
-
-        # Verificar si la plantilla contiene '###'
-        if '###' not in name_template_field.value:
-            snack_bar.content.value = "Error: La plantilla debe contener '###' para indicar la posición del contador."
-            snack_bar.open = True
-            page.update()
-            return
-
-        # Llamar a la función para renombrar archivos
-        result = bulk_rename_files(state["rename_folder"], name_template_field.value, snack_bar)
-        if isinstance(result, list):
-            snack_bar.content.value = f"Archivos renombrados correctamente. Total: {len(result)}"
-        else:
-            snack_bar.content.value = f"Error: {result}"
-        snack_bar.open = True
-        page.update()
 
     return ft.Container(
         content=ft.Column([
@@ -52,7 +19,7 @@ def rename_files_view(page, state, folder_picker, snack_bar, carpeta_text):
             ft.ElevatedButton(
                 "Seleccionar Carpeta",
                 icon=ft.Icons.FOLDER_OPEN,
-                on_click=seleccionar_carpeta,
+                on_click=lambda _: seleccionar_carpeta(folder_picker),
                 color=ft.Colors.WHITE,
                 bgcolor=ft.Colors.BLUE_900
             ),
@@ -63,7 +30,7 @@ def rename_files_view(page, state, folder_picker, snack_bar, carpeta_text):
                 icon=ft.Icons.DRIVE_FILE_RENAME_OUTLINE,
                 color=ft.Colors.WHITE,
                 bgcolor=ft.Colors.GREEN_700,
-                on_click=renombrar_archivos
+                on_click=lambda _: renombrar_archivos(state, name_template_field, snack_bar, page),
             ),
             ft.Container(
                 content=ft.Column([
