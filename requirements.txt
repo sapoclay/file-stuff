@@ -2,3 +2,6 @@ flet
 Pillow
 rembg
 onnxruntime
+pdf2docx
+PyPDF2
+

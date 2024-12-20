@@ -10,6 +10,11 @@ state = {
     "selecting_resize_output": False,
     "convert_input_file": "",
     "rename_folder": None,
+    "current_view": "pdf_converter",  # Establecer la vista por defecto en pdf_converter
+    "pdf_file_path": "",  # Almacena la ruta del archivo PDF seleccionado
+    "selected_dir": None,  # Variable para guardar la carpeta seleccionada para fusionar pdfs
+
+    
 }
 
 # Controles compartidos entre las vistas
@@ -114,9 +119,37 @@ carpeta_destino_text = ft.Text(
 
 # Controles para la vista rename_all_Files
 
-# Definición de carpeta_text
 carpeta_text = ft.Text(
     "Carpeta seleccionada: No seleccionada",
+    size=14,
+    color=ft.Colors.BLUE_200,
+)
+
+# Dropdown para seleccionar el formato de salida para convertir PDF
+output_format_dropdown = ft.Dropdown(
+    label="Selecciona el formato de salida",
+    options=[
+        ft.dropdown.Option("docx", "DOCX"),
+        ft.dropdown.Option("odt", "ODT"),
+    ],
+    value="docx",
+)
+
+pdf_file_text = ft.Text(
+    "Archivo seleccionado: No seleccionado",
+    size=14,
+    color=ft.Colors.BLUE_200,
+)
+
+# Mensajes de error o éxito (estos se pueden usar en el Snackbar)
+snack_bar = ft.SnackBar(
+    content=ft.Text(""),
+    duration=2000,  # Duración del mensaje en milisegundos
+)
+
+# Mensaje de error o éxito para la vista de fusionar PDFs
+pdf_dir = ft.Text(
+    "Carpeta de salida: No seleccionada",
     size=14,
     color=ft.Colors.BLUE_200,
 )

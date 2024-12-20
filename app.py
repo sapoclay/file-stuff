@@ -3,7 +3,6 @@ from theme import configurar_ventana, configurar_tema
 
 from functions.functions_duplicate_files import scan_directory
 from functions.functions_organize_files import organize_directory  
-
 from functions.functions_folder_picker import handle_folder_picker 
 from functions.functions_convert_images import convert_image_function
 
@@ -14,7 +13,8 @@ from views.resize_files_view import resize_files_view
 from views.convert_files_view import convert_images_view
 from views.delete_background_view import delete_background_view
 from views.rename_files_view import rename_files_view
-
+from views.pdf_converter_view import pdf_converter_view
+from views.merge_pdfs_view import merge_pdfs_view
 
 # Importar variables de estado y controles
 from state_controls import (
@@ -36,6 +36,10 @@ from state_controls import (
     convert_input_text,
     convert_result_text,
     format_dropdown,
+    output_format_dropdown,
+    snack_bar,
+    pdf_dir
+    
 )
 
 def main(page: ft.Page):
@@ -98,7 +102,17 @@ def main(page: ft.Page):
             content_area.content = rename_files_view(
                 page, state, folder_picker, snack_bar, carpeta_text
             )
-        elif selected == 6:
+        elif selected == 6:  # Índice para la nueva vista
+            state["current_view"] = "pdf_converter"
+            content_area.content = pdf_converter_view(
+                page, state, folder_picker, snack_bar, output_format_dropdown
+            )
+        elif selected == 7:  
+            state["current_view"] = "merge_pdfs"
+            content_area.content = merge_pdfs_view(
+                page, state, folder_picker, snack_bar
+            )
+        elif selected == 8:
             state["current_view"] = "about"
             content_area.content = view_about(page)
         content_area.update()
@@ -121,23 +135,11 @@ def main(page: ft.Page):
     # Configurar el selector de CARPETAS
     folder_picker = ft.FilePicker(
         on_result=lambda e: handle_folder_picker(
-            e,  # Este es el evento, ya está siendo pasado automáticamente
-            state,
-            page,
-            selected_dir_text,
-            scan_directory,
-            organize_directory,
-            resize_input_text,
-            resize_output_text,
-            folder_picker,
-            result_text,
-            delete_all_button,
-            duplicates_list,
-            organize_result_text,
-            carpeta_origen_text, 
-            carpeta_destino_text,
-            organize_dir_text,
-            carpeta_text
+                    e, state, page, selected_dir_text, scan_directory, organize_directory,
+        resize_input_text, resize_output_text, folder_picker, result_text,
+        delete_all_button, duplicates_list, organize_result_text,
+        carpeta_origen_text, carpeta_destino_text, organize_dir_text,
+        carpeta_text, snack_bar, pdf_dir
         )
     )
     page.overlay.extend([folder_picker, file_picker])
@@ -185,6 +187,16 @@ def main(page: ft.Page):
                 icon=ft.Icons.DRIVE_FILE_RENAME_OUTLINE,
                 selected_icon=ft.Icons.DRIVE_FILE_RENAME_OUTLINE,
                 label="Renombrar",
+            ),
+            ft.NavigationRailDestination(
+                icon=ft.Icons.PICTURE_AS_PDF,
+                selected_icon=ft.Icons.PICTURE_AS_PDF,
+                label="Convertir PDF",
+            ),
+            ft.NavigationRailDestination(
+                icon=ft.Icons.MERGE_TYPE,
+                selected_icon=ft.Icons.MERGE_TYPE,
+                label="Fusionar PDFs",
             ),
             ft.NavigationRailDestination(
                 icon = ft.Icons.INFO,

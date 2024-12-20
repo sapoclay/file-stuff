@@ -1,5 +1,5 @@
 import flet as ft
-from state_controls import organize_dir_text, selected_dir_text, carpeta_origen_text, carpeta_destino_text
+from state_controls import organize_dir_text, selected_dir_text, carpeta_origen_text, carpeta_destino_text, pdf_file_text
 from functions.functions_duplicate_files import scan_directory
 from functions.functions_organize_files import organize_directory
 
@@ -18,9 +18,10 @@ def handle_folder_picker(
     e, state, page, selected_dir_text, scan_directory, organize_directory,
     resize_input_text, resize_output_text, folder_picker, result_text,
     delete_all_button, duplicates_list, organize_result_text,
-    carpeta_origen_text, carpeta_destino_text, organize_dir_text, carpeta_text
+    carpeta_origen_text, carpeta_destino_text, organize_dir_text, carpeta_text, snack_bar,pdf_dir
 ):
-    if e.path:
+    
+    if e.path or e.files:
         # Vista de archivos duplicados
         if state["current_view"] == "duplicates":
             state["selected_dir"] = e.path
@@ -81,6 +82,50 @@ def handle_folder_picker(
             carpeta_text.value = f"Carpeta seleccionada: {e.path}"
             if carpeta_text.page:  # Verificar que el control está en la página
                 carpeta_text.update()
+                
+        # Vista de convertir PDF
+        elif state["current_view"] == "pdf_converter":
+            # Depuración: Verifica el contenido del evento recibido
+            print(f"Evento recibido: {e.files}")  
+
+            if e.files:
+                pdf_file_path = e.files[0].path  # Obtener la ruta del archivo seleccionado
+                print(f"Archivo seleccionado: {pdf_file_path}")  # Depuración
+
+                # Actualiza el estado y el control de texto
+                state["pdf_file_path"] = pdf_file_path
+                pdf_file_text.value = f"Archivo seleccionado: {pdf_file_path}"
+                print(f"Texto actualizado: {pdf_file_text.value}")  # Depuración
+
+                if pdf_file_text.page:  # pdf_file_text está asociado a la página
+                    pdf_file_text.update()
+                else:
+                    print("Error: pdf_file_text no está asociado a la página.")
+                
+                # Actualiza el snackbar
+                snack_bar.content.value = f"Archivo seleccionado: {pdf_file_path}"
+                snack_bar.open = True
+                page.update()
+            else:
+                print("No se seleccionó ningún archivo.")
+                snack_bar.content.value = "Error: No se seleccionó ningún archivo."
+                snack_bar.open = True
+                page.update()
+        elif state["current_view"] == "merge_pdfs":
+            if e.path:  # Verificar si se seleccionó un directorio
+                state["merge_pdfs"] = e.path
+                pdf_dir.value = f"Carpeta seleccionada: {e.path}"
+                if pdf_dir.page:  # Verificar si pdf_dir está asociado a la página
+                    pdf_dir.update()
+                else:
+                    print("Error: pdf_dir no está asociado a la página.")
+            else:
+                print("Error: No se seleccionó una carpeta.")
+                snack_bar.content.value = "Error: No se seleccionó una carpeta."
+                snack_bar.open = True
+                page.update()
+
+
         
         # Asegúrate de reflejar los cambios en la página
         page.update()
