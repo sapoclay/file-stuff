@@ -1,6 +1,6 @@
 ## FILES STUFF
 
-![file-stuff](https://github.com/user-attachments/assets/91bc7b6a-9263-4584-b142-4ead1a5e1e0b)
+![file-stuff-about](https://github.com/user-attachments/assets/22bd017f-ba7e-4670-95e2-6029581bbc5d)
 
 - Versión 0.06
 
