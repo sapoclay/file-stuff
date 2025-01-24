@@ -4,4 +4,4 @@ rembg
 onnxruntime
 pdf2docx
 PyPDF2
-
+pystray

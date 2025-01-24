@@ -1,5 +1,6 @@
 import flet as ft
 from theme import configurar_ventana, configurar_tema
+import platform
 
 from functions.functions_duplicate_files import scan_directory
 from functions.functions_organize_files import organize_directory  
@@ -219,6 +220,7 @@ def main(page: ft.Page):
         )
     )
     
+
 
 if __name__ == "__main__":
     ft.app(target=main)

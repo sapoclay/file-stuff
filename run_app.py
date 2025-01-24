@@ -2,55 +2,6 @@ import os
 import subprocess
 import sys
 
-"""
-Este módulo proporciona un flujo automatizado para gestionar el entorno virtual de Python y ejecutar un script principal.
-
-Funciones principales:
-- Crear, configurar y verificar un entorno virtual.
-- Instalar dependencias desde un archivo requirements.txt.
-- Ejecutar un script principal dentro del entorno virtual.
-
-Dependencias:
-- os: Para operaciones relacionadas con el sistema de archivos y rutas.
-- subprocess: Para ejecutar comandos de sistema.
-- sys: Para verificar la versión de Python y gestionar el proceso del script.
-
-Variables globales:
-- DIRECTORIO_SCRIPT (str): Directorio donde se encuentra el archivo `run_app.py`.
-- VENV_DIR (str): Ruta al entorno virtual (venv).
-
-Funciones:
-1. **obtener_python_ejecutable() -> str**
-   - Determina la ruta del ejecutable de Python dentro del entorno virtual, dependiendo del sistema operativo.
-
-2. **entorno_virtual_existe() -> bool**
-   - Comprueba si el entorno virtual ya está creado.
-
-3. **crear_entorno_virtual()**
-   - Crea un entorno virtual utilizando `virtualenv`.
-
-4. **asegurar_pip(python_executable: str)**
-   - Verifica que `pip` esté disponible en el entorno virtual, e intenta instalarlo si no lo está.
-
-5. **instalar_dependencias(python_executable: str)**
-   - Instala las dependencias enumeradas en el archivo `requirements.txt`.
-
-6. **ejecutar_app()**
-   - Ejecuta el archivo `app.py` utilizando el Python del entorno virtual.
-
-7. **main()**
-   - Controla la lógica principal:
-     - Verifica si el entorno virtual existe.
-     - Si no existe, lo crea e instala las dependencias.
-     - Asegura que las dependencias estén actualizadas.
-     - Ejecuta el script principal.
-
-"""
-
-# Verificar que la versión de Python es compatible
-if sys.version_info.major < 3:
-    print("Se requiere Python 3 para ejecutar este script.")
-    sys.exit(1)
 
 # Obtener el directorio donde se encuentra el archivo run_app.py
 DIRECTORIO_SCRIPT = os.path.dirname(os.path.abspath(__file__))
@@ -65,22 +16,18 @@ def obtener_python_ejecutable():
     else:  # Linux/macOS
         return os.path.join(VENV_DIR, "bin", "python")
 
-# Comprobar si el entorno virtual está creado
-def entorno_virtual_existe():
-    return os.path.isdir(VENV_DIR)
-
-# Crear el entorno virtual para ejecutar directamente el programa ahí
-def crear_entorno_virtual():
-    print("Creando el entorno virtual...")
-    subprocess.run([sys.executable, "-m", "virtualenv", VENV_DIR], check=True)
-
-# Instalar pip si no está instalado
+# Verificar si pip está instalado; instalarlo si no lo está
 def asegurar_pip(python_executable):
     try:
         subprocess.run([python_executable, "-m", "pip", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except subprocess.CalledProcessError:
         print("pip no está instalado. Intentando instalar pip manualmente...")
         subprocess.run([python_executable, "-m", "ensurepip", "--upgrade"], check=True)
+
+# Crear el entorno virtual usando venv
+def crear_entorno_virtual():
+    print("Creando el entorno virtual con venv...")
+    subprocess.run([sys.executable, "-m", "venv", VENV_DIR], check=True)
 
 # Instalar las dependencias desde requirements.txt
 def instalar_dependencias(python_executable):
@@ -92,7 +39,7 @@ def instalar_dependencias(python_executable):
     if os.path.exists(ruta_requirements):
         subprocess.run([python_executable, "-m", "pip", "install", "-r", ruta_requirements], check=True)
     else:
-        print("No se encontró el archivo requirements.txt.")
+        print("No se encontró el archivo requirements.txt. Asegúrate de que esté en el directorio del script.")
 
 # Ejecutar el script principal dentro del entorno virtual
 def ejecutar_app():
@@ -104,23 +51,45 @@ def ejecutar_app():
     else:
         print(f"El ejecutable no se encuentra: {python_executable}")
 
+# Instalar paquetes necesarios en Linux automáticamente (opcional)
+def instalar_paquetes_linux():
+    if os.name == 'posix' and sys.platform == 'linux':
+        try:
+            subprocess.run(["sudo", "apt", "install", "-y", "python3-venv"], check=True)
+        except Exception as e:
+            print(f"Error al instalar python3-venv: {e}")
+
 # Lógica principal
 def main():
     python_executable = obtener_python_ejecutable()
 
-    if not entorno_virtual_existe():
-        # Si no existe el entorno virtual, crearlo e instalar dependencias
+    # Instalar herramientas necesarias en Linux (opcional)
+    if os.name == 'posix' and sys.platform == 'linux':
+        instalar_paquetes_linux()
+
+    # Verificar si el entorno virtual existe
+    if not os.path.isdir(VENV_DIR):
         print("El entorno virtual no existe. Creando uno nuevo...")
-        crear_entorno_virtual()
-        instalar_dependencias(python_executable)  # Llama a la función para instalar las dependencias
-    else:
-        # Si el entorno virtual ya existe
-        print("El entorno virtual ya existe.")
-        instalar_dependencias(python_executable)  # Asegurar que las dependencias están instaladas
+        try:
+            crear_entorno_virtual()
+        except Exception as e:
+            print(f"Error al crear el entorno virtual: {e}")
+            sys.exit(1)
+
+    # Instalar dependencias
+    try:
+        instalar_dependencias(python_executable)
+    except Exception as e:
+        print(f"Error al instalar dependencias: {e}")
+        sys.exit(1)
 
     # Ejecutar la aplicación
-    ejecutar_app()
+    try:
+        ejecutar_app()
+    except Exception as e:
+        print(f"Error al ejecutar la aplicación: {e}")
+        sys.exit(1)
 
 # Ejecutar el script
 if __name__ == "__main__":
-    main()
+    main() 
